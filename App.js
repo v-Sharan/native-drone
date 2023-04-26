@@ -64,7 +64,7 @@ export default function App() {
         })
         .catch((err) => {
           setIsError(true);
-          setError(err);
+          setError(err.message);
         })
         .finally(() => {
           setLoading(false);
@@ -115,7 +115,7 @@ export default function App() {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  0<Text>{message}</Text>
+                  <Text>{message}</Text>
                   <TouchableOpacity
                     style={{
                       backgroundColor: "black",
@@ -301,7 +301,7 @@ export default function App() {
               />
             </View>
           )}
-          <Footer />
+          {!loading && !isRreCapta && !isError && !isMessage && <Footer />}
         </View>
       </ScrollView>
     </>
