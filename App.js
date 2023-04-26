@@ -45,11 +45,8 @@ export default function App() {
     setLocation(location.coords);
   };
 
-  useEffect(() => {
-    getLocation();
-  }, []);
-
   const handleSendLocation = async () => {
+    getLocation();
     if (enteredRecapta == reCapta) {
       setLoading(true);
       const data = {
