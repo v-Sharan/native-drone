@@ -10,9 +10,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 import OptionSelect from "./components/OptionSelect";
-import { fireRemoveBg, CarCrash, Cardiac, Epilepsy, hara,snake } from "./assets";
+import {
+  fireRemoveBg,
+  CarCrash,
+  Cardiac,
+  Epilepsy,
+  hara,
+  snake,
+} from "./assets";
 import axios from "axios";
 import * as Location from "expo-location";
+import Footer from "./components/Footer";
 
 export default function App() {
   const [location, setLocation] = useState();
@@ -75,231 +83,233 @@ export default function App() {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={{ fontSize: 48 }}>Flying Escort</Text>
-        {loading && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={loading}
-            onRequestClose={() => {
-              setLoading(!loading);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <ActivityIndicator size={"large"} color={"#00ff00"} />
-                <Text>Loading..</Text>
+    <>
+      <Text style={{ fontSize: 48, paddingTop: 45 }}>Flying Escort</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          {loading && (
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={loading}
+              onRequestClose={() => {
+                setLoading(!loading);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <ActivityIndicator size={"large"} color={"#00ff00"} />
+                  <Text>Loading..</Text>
+                </View>
               </View>
-            </View>
-          </Modal>
-        )}
-        {isMessage && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isMessage}
-            onRequestClose={() => {
-              setIsMessage(!isMessage);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text>{message}</Text>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "black",
-                    marginTop: 10,
-                    borderRadius: 10,
-                  }}
-                >
-                  <Text
-                    style={{ padding: 10, color: "white" }}
-                    onPress={() => {
-                      setIsMessage(false);
+            </Modal>
+          )}
+          {isMessage && (
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={isMessage}
+              onRequestClose={() => {
+                setIsMessage(!isMessage);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  0<Text>{message}</Text>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "black",
+                      marginTop: 10,
+                      borderRadius: 10,
                     }}
                   >
-                    Go Back
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{ padding: 10, color: "white" }}
+                      onPress={() => {
+                        setIsMessage(false);
+                      }}
+                    >
+                      Go Back
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </Modal>
-        )}
-        {isError && (
-          <Modal animationType="slide" transparent={true} visible={!!error}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text>{error}</Text>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "black",
-                    marginTop: 10,
-                    borderRadius: 10,
-                  }}
-                  onPress={() => {
-                    setIsError(false);
-                  }}
-                >
-                  <Text
-                    style={{ padding: 10, color: "white" }}
+            </Modal>
+          )}
+          {isError && (
+            <Modal animationType="slide" transparent={true} visible={!!error}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text>{error}</Text>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "black",
+                      marginTop: 10,
+                      borderRadius: 10,
+                    }}
                     onPress={() => {
                       setIsError(false);
                     }}
                   >
+                    <Text
+                      style={{ padding: 10, color: "white" }}
+                      onPress={() => {
+                        setIsError(false);
+                      }}
+                    >
+                      Go Back
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          )}
+          {isRreCapta && (
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center",
+                padding: 10,
+                gap: 12,
+              }}
+            >
+              <Text style={{ textAlign: "center", fontSize: 100 }}>
+                {reCapta}
+              </Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                Enter the Above shown Number
+              </Text>
+              <TextInput
+                style={{
+                  height: 40,
+                  backgroundColor: "#F3F4F8",
+                  borderRadius: 12,
+                  paddingLeft: 10,
+                }}
+                onChangeText={(text) => {
+                  setEnteredRecapta(text);
+                }}
+              />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                }}
+              >
+                <TouchableOpacity
+                  style={{ backgroundColor: "black", borderRadius: 10 }}
+                  onPress={handleSendLocation}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      padding: 10,
+                      textAlign: "center",
+                    }}
+                  >
+                    Submit
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ backgroundColor: "black", borderRadius: 10 }}
+                  onPress={() => {
+                    setIsReCapta(false);
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      padding: 10,
+                      textAlign: "center",
+                    }}
+                  >
                     Go Back
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </Modal>
-        )}
-        {isRreCapta && (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              textAlign: "center",
-              padding: 10,
-              gap: 12,
-            }}
-          >
-            <Text style={{ textAlign: "center", fontSize: 100 }}>
-              {reCapta}
-            </Text>
-            <Text
-              style={{
-                textAlign: "center",
-              }}
-            >
-              Enter the Above shown Number
-            </Text>
-            <TextInput
-              style={{
-                height: 40,
-                backgroundColor: "#F3F4F8",
-                borderRadius: 12,
-                paddingLeft: 10,
-              }}
-              onChangeText={(text) => {
-                setEnteredRecapta(text);
-              }}
-            />
+          )}
+          {!loading && !isRreCapta && !isError && !isMessage && (
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-around",
+                flexWrap: "wrap",
+                gap: 25,
+                paddingTop: 30,
               }}
             >
-              <TouchableOpacity
-                style={{ backgroundColor: "black", borderRadius: 10 }}
-                onPress={handleSendLocation}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    padding: 10,
-                    textAlign: "center",
-                  }}
-                >
-                  Submit
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ backgroundColor: "black", borderRadius: 10 }}
-                onPress={() => {
-                  setIsReCapta(false);
+              <OptionSelect
+                title={"Fire"}
+                imgUrl={fireRemoveBg}
+                dimesion={100}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Fire");
                 }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    padding: 10,
-                    textAlign: "center",
-                  }}
-                >
-                  Go Back
-                </Text>
-              </TouchableOpacity>
+              />
+              <OptionSelect
+                title={"Road Accident"}
+                imgUrl={CarCrash}
+                dimesion={120}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Road Accident");
+                }}
+              />
+              <OptionSelect
+                title={"Cardiac Arrest"}
+                imgUrl={Cardiac}
+                dimesion={100}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Cardiac Arrest");
+                }}
+              />
+              <OptionSelect
+                title={"Epilepsy"}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Epilepsy");
+                }}
+                imgUrl={Epilepsy}
+                dimesion={130}
+              />
+              <OptionSelect
+                title={"Harassment"}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Harassment");
+                }}
+                imgUrl={hara}
+                dimesion={100}
+              />
+              <OptionSelect
+                title={"Snake Bite"}
+                onPressHandle={() => {
+                  handleCapta();
+                  setType("Snake Bite");
+                }}
+                imgUrl={snake}
+                dimesion={100}
+              />
             </View>
-          </View>
-        )}
-        {!loading && !isRreCapta && !isError && !isMessage && (
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 25,
-              paddingTop: 30,
-            }}
-          >
-            <OptionSelect
-              title={"Fire"}
-              imgUrl={fireRemoveBg}
-              dimesion={100}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Fire");
-              }}
-            />
-            <OptionSelect
-              title={"Road Accident"}
-              imgUrl={CarCrash}
-              dimesion={120}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Road Accident");
-              }}
-            />
-            <OptionSelect
-              title={"Cardiac Arrest"}
-              imgUrl={Cardiac}
-              dimesion={100}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Cardiac Arrest");
-              }}
-            />
-            <OptionSelect
-              title={"Epilepsy"}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Epilepsy");
-              }}
-              imgUrl={Epilepsy}
-              dimesion={130}
-            />
-            <OptionSelect
-              title={"Harassment"}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Harassment");
-              }}
-              imgUrl={hara}
-              dimesion={100}
-            />
-            <OptionSelect
-              title={"Snake Bite"}
-              onPressHandle={() => {
-                handleCapta();
-                setType("Snake Bite");
-              }}
-              imgUrl={snake}
-              dimesion={100}
-            />
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+          <Footer />
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 45,
     paddingLeft: 20,
   },
   centeredView: {
