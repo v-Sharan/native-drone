@@ -20,6 +20,7 @@ import {
 } from "./assets";
 import axios from "axios";
 import * as Location from "expo-location";
+import * as SMS from "expo-sms";
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
   const [type, setType] = useState("");
   const [isMessage, setIsMessage] = useState(false);
   const [message, setMessage] = useState();
+  let sms;
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -45,23 +47,40 @@ export default function App() {
     setLocation(location.coords);
   };
 
-  const handleSendLocation = async () => {
+  useEffect(() => {
     getLocation();
+  }, []);
+
+  const sendSms = async () => {
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+      const { result } = await SMS.sendSMSAsync(
+        "6382758504",
+        `location for Harassment latitude:${location.latitude} longitude:${location.longitude}`
+      );
+    }
+  };
+
+  const handleSendLocation = async () => {
     if (enteredRecapta == reCapta) {
       setLoading(true);
       const data = {
         ...location,
         type,
       };
+      console.log(location);
       axios
         .post("https://medical-uav.onrender.com/api/medicaluav", data)
         .then((res) => {
           setIsMessage(true);
           setMessage(res.data.message);
+          if (type === "Harassment") {
+            sendSms();
+          }
         })
-        .catch((err) => {
+        .catch((error) => {
           setIsError(true);
-          setError(err.message);
+          setError(error.response.data.message);
         })
         .finally(() => {
           setLoading(false);

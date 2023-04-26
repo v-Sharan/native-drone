@@ -14,7 +14,7 @@ const Footer = () => {
       <TouchableOpacity
         style={{ backgroundColor: "#F3F4F8", borderRadius: 20, padding: 30 }}
         onPress={() => {
-          Linking.openURL("tel:+91 94448 30611");
+          Linking.openURL("tel:+91 6382 758 504");
         }}
       >
         <Text style={styles.text}>HelpLine Number</Text>
@@ -27,7 +27,7 @@ const Footer = () => {
           }}
         >
           <Feather name="phone-call" size={24} color="black" />
-          <Text style={styles.number}>94448 30611</Text>
+          <Text style={styles.number}>+91 6382 758 504</Text>
         </View>
       </TouchableOpacity>
     </View>
