@@ -34,7 +34,6 @@ export default function App() {
   const [type, setType] = useState("");
   const [isMessage, setIsMessage] = useState(false);
   const [message, setMessage] = useState();
-  let sms;
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -73,10 +72,9 @@ export default function App() {
         .post("https://medical-uav.onrender.com/api/medicaluav", data)
         .then((res) => {
           setIsMessage(true);
+          sendSms();
           setMessage(res.data.message);
-          if (type === "Harassment") {
-            sendSms();
-          }
+
         })
         .catch((error) => {
           setIsError(true);
